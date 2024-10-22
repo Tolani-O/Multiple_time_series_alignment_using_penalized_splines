@@ -5,7 +5,7 @@ from scipy.interpolate import BSpline
 from scipy.sparse import csr_array, vstack, hstack
 
 
-class SpikeTrainModel:
+class TimeSeriesAlignmentModel:
     def __init__(self, Y, time):
         # variables
         self.chi = None
