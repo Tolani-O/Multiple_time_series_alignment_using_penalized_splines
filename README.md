@@ -1,19 +1,17 @@
-# Time series clustering with Temporal Convolutional Neural Network
+# Multiple time series alignments using penalized splines
 
 ## Description
 
-This repository implements a model-based clustering technique to cluster samples from temporal Poisson point processes, based on their latent intensity functions. We model the intensity functions for each cluster as a function of the component point processes using a causal Temporal Convolutional Neural Network, as described in [Bai. et. al](https://doi.org/10.48550/arXiv.1803.01271). The cluster membership probabilities are likewise modeled as a function of the input point processes. A negative log-likelihood loss is used, and in particular, a Poisson point process likelihood. Learning is done using gradient descent, which is implemented in PyTorch. As such, this implementation takes full advantage of GPU acceleration and parallelization. We applied the method to cluster simulated Poisson process data, from 3 clusters defined by 3 different intensity functions, and were able to recover the clusters by fitting the model to the data.
+This repository implements a model-based time series alignment method, using time-warping. Intuitively, this method is able to find the average across a set of time series data points, under the assumption that data samples may be phase shifted or time-warped relative to each other. The method outputs a data "centroid", as well as the time warping function for each sample to align with the centroid. The centroid as well as the time warping function for each sample is modeled using penalized Basis splines. A negative log-likelihood loss is used is used to learn the alignment. For demonstration, we used a Poisson point process likelihood, but the code is flexible enough to use different choices of loss functions. We applied the method to align simulated Poisson process data, and were able to recover the time warping functions used to misalign the data during simulation.
 
 ## File Structure
 
 ## Getting Started
 
-* ```tcn.py```: Contains the main source code for the causal, temporal convolutional neural network, and the negative log-likelihood loss function.
+* ```main.py```: Main entry point. Contains code to run the method on simulated data. Contains the main source code for the causal, temporal convolutional neural network, and the negative log-likelihood loss function.
 * ```general_functions.py```: Includes utility and helper functions for the model, such as logging and plotting functions.
-* ```main_tcn.py```: Script to run the clustering algorithm on sample simulated data.
-* ```main_learn_initial_outputs.py```: Contains code to learn the intensity functions for each cluster.
-* ```main_learn_initial_maps.py```: Contains code to learn the cluster membership probabilities.
-* ```main_finetune_maps.py```: Contains code to jointly learn the intensity functions and cluster membership probabilities.
+* ```TimeSeriesAlignmentModel.py```: Contains the main source code to run the alignment on the sample of time series data. As our current usecase is for point process time series data, the model is fit using a Poisson point process negative log-likelihood as its loss.
+* ```test_gradients_with_timewarping.py```: Contains script to demonstrate the time-warping capabilities of the model.
 
 ### Prerequisites
 
@@ -37,8 +35,8 @@ This repository implements a model-based clustering technique to cluster samples
 1. Clone the repository:
 
 ```
-git clone https://github.com/Tolani-O/Time_series_clustering_with_temporal_convolutions.git
-cd Time_series_clustering_with_temporal_convolutions
+git clone https://github.com/Tolani-O/Multiple_time_series_alignment_using_penalized_splines.git
+cd Multiple_time_series_alignment_using_penalized_splines
 ```
 
 2. Create and activate a virtual environment:
@@ -56,7 +54,7 @@ pip install -r requirements.txt
 
 ### Usage
 
-Simply run ```main_tcn.py```.
+Simply run ```main.py```.
 
 ## Contributing
 
